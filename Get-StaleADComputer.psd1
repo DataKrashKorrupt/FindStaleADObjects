@@ -12,7 +12,7 @@
 RootModule = '.\Get-StaleADComputer.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.0.1'
+ModuleVersion = '1.1.0'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -30,7 +30,7 @@ CompanyName = 'Unknown'
 Copyright = '(c) 2023 Mark Groves. All rights reserved.'
 
 # Description of the functionality provided by this module
-Description = 'This tool will query AD for enabled computer objects that have not autneticated with the Domain Controller within the specified timeframe of either months or years'
+Description = 'This tool will query AD for enabled computer objects that have not authenticated with the Domain Controller within the specified timeframe of either months or years'
 
 # Minimum version of the Windows PowerShell engine required by this module
 # PowerShellVersion = ''
