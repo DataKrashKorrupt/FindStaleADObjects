@@ -67,14 +67,12 @@ https://github.com/DataKrashKorrupt/Get-StaleADComputer.git
     $inactiveComputers = Get-ADComputer -Filter {LastLogonDate -lt $timePeriod -and Enabled -eq $true} -Properties *
 
     #Creating object and properties to output to pipeline
-    [pscustomobject]$properties = @{
+    [pscustomobject]@{
         'ComputerName' = $inactiveComputers.Name
         'OS' = $inactiveComputers.OperatingSystem
         'Description' = $inactiveComputers.Description
         'ADObject' = $inactiveComputers.DistinguishedName
         'LastLogon' = $inactiveComputers.LastLogonDate
         'Created' = $inactiveComputers.whenCreated
-    } 
-
-    Write-Output $properties
+    }
 }
