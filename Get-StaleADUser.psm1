@@ -39,7 +39,7 @@ PSObject
 https://learn.microsoft.com/en-us/powershell/module/activedirectory/?view=windowsserver2022-ps
 
 .LINK
-GitURL
+https://github.com/DataKrashKorrupt/Get-StaleADUser.git
 #>
     [CmdletBinding(DefaultParameterSetName='Months')]
     param (
