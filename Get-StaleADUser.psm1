@@ -1,32 +1,78 @@
 function Get-StaleADUser {
-    [CmdletBinding()]
+<#
+.SYNOPSIS
+This tool will query AD for enabled user objects that have not authenticated with the Domain Controller within the specified timeframe of either months or years.
+
+.DESCRIPTION
+A simple tool that queries Active Directory for active user objects that have not authenticated with the Domain Controller within a specified time period. This module must be either run locally on Domain Controller or on endpoint with the ActiveDirectory module installed to run the query.
+
+The tool uses LastLogonDate property of the user object to determine the results returned based on input.
+
+.PARAMETER LastLoginMonths
+Enter number of months (1-11) in past time as threshold. Will return any object with a login time stamp older than this.
+
+.PARAMETER LastLoginYears
+Enter number of years in past time as threshold. Will return any object with a login time stamp older than this.
+
+.EXAMPLE
+This will return user objects that have not authenticated >6 months, will sort objects by LastLogon timestamp with oldest at the top, and export the results to a CSV file:
+
+Get-StaleADuser -LastLoginMonths 6 | Sort-Object LastLogon | Export-CSV C:\temp\staleADusers.csv
+
+.EXAMPLE
+This will return all user objects that have not authenticated in >1 year (default value) and display results in table in the console:
+
+Get-StaleADuser -LastLoginYears 
+
+.EXAMPLE
+Will return all user objects that have not authenticated in >2 months (positional parameter in default parameter set) and will display results in table in the console with oldest at the top:
+
+Get-StaleADuser 2 | Sort-Object LastLogon
+
+.INPUTS
+None. You cannot pipe objects to this module.
+
+.OUTPUTS
+PSObject
+
+.LINK
+https://learn.microsoft.com/en-us/powershell/module/activedirectory/?view=windowsserver2022-ps
+
+.LINK
+GitURL
+#>
+    [CmdletBinding(DefaultParameterSetName='Months')]
     param (
-        [int]$LastLoginYears,
-        [int]$LastLoginMonths
+        [Parameter(ParameterSetName='Years')]
+        [PSDefaultValue(Help='1 Year')]
+        [int]$LastLoginYears = 1,
+
+        [Parameter(ParameterSetName='Months')]
+        [PSDefaultValue(Help='3 Months')]
+        [ValidateRange(1,11)]
+        [int]$LastLoginMonths = 3
     )
     
     #Determine time period to query
-    if ($PSBoundParameters.ContainsKey('LastLoginYears')) {
-
-        Write-Verbose "Time of $LastLoginYears years specified"
-        $TimePeriod = (Get-Date).AddYears(-$LastLoginYears)
-
-    } elseif ($PSBoundParameters.ContainsKey('LastLoginMonths')) {
-
+    if ($PSBoundParameters.ContainsKey('LastLoginMonths')) {
         Write-Verbose "Time of $LastLoginMonths months specified"
         $TimePeriod = (Get-Date).AddMonths(-$LastLoginMonths)
-
-    } else {
-        
-        Write-Verbose "No Time Period Specified"
-        return
+    } elseif ($PSBoundParameters.ContainsKey('LastLoginYears')) {
+        Write-Verbose "Time of $LastLoginYears years specified"
+        $TimePeriod = (Get-Date).AddYears(-$LastLoginYears)
     }
 
     #Get enabled users with last login date of older than specified time period
     Write-Verbose "Retrieving all users that have not logged in prior to $($TimePeriod.ToString("yyyy/MM/dd"))"
-    $InactiveUsers = Get-ADUser -Filter {LastLogonDate -lt $TimePeriod -and Enabled -eq $true} -Properties *
+    $inactiveUsers = Get-ADUser -Filter {LastLogonDate -lt $TimePeriod -and Enabled -eq $true} -Properties *
 
-    #Pipe objects selecting properties and sorting by LastLogonDate
-    $InactiveUsers | Select-Object SamAccountName,DisplayName,Description,DistinguishedName,LastLogonDate,whenCreated | Sort-Object LastLogonDate
-    
+    #Creating object and properties to output to pipeline
+    [PSCustomObject]@{
+        'UserName' = $inactiveUsers.SamAccountName
+        'FullName' = $inactiveUsers.DisplayName
+        'Description' = $inactiveUsers.Description
+        'ADObject' = $inactiveUsers.DistinguishedName
+        'LastLogon' = $inactiveUsers.LastLogonDate
+        'Created' = $inactiveUsers.whenCreated
+    }  
 }
