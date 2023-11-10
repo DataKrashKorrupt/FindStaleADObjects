@@ -74,5 +74,5 @@ https://github.com/DataKrashKorrupt/Get-StaleADUser.git
         'ADObject' = $inactiveUsers.DistinguishedName
         'LastLogon' = $inactiveUsers.LastLogonDate
         'Created' = $inactiveUsers.whenCreated
-    }  
+    }
 }
