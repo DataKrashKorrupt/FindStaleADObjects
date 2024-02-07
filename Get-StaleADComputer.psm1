@@ -15,17 +15,17 @@ Enter number of months (1-11) in past time as threshold. Will return any object 
 Enter number of years in past time as threshold. Will return any object with a login time stamp older than this.
 
 .EXAMPLE
-This will return computer objects that have not authenticated >6 months, will sort objects by LastLogon timestamp with oldest at the top, and export the results to a CSV file:
+This will return computer objects that have not authenticated in over 6 months, will sort objects by LastLogon timestamp with oldest at the top, and export the results to a CSV file:
 
 Get-StaleADComputer -LastLoginMonths 6 | Sort-Object LastLogon | Export-CSV C:\temp\staleADComputers.csv
 
 .EXAMPLE
-This will return all computer objects that have not authenticated in >1 year (default value) and display results in table in the console:
+This will return all computer objects that have not authenticated in over 1 year (default value) and display results in table in the console:
 
 Get-StaleADComputer -LastLoginYears 
 
 .EXAMPLE
-Will return all computer objects that have not authenticated in >2 months (positional parameter in default parameter set) and will display results in table in the console with oldest at the top:
+Will return all computer objects that have not authenticated in over 2 months (positional parameter in default parameter set) and will display results in table in the console with oldest at the top:
 
 Get-StaleADComputer 2 | Sort-Object LastLogon
 
