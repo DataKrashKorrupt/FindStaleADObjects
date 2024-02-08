@@ -1,0 +1,263 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<helpItems schema="maml" xmlns="http://msh">
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Get-StaleADComputer</command:name>
+      <command:verb>Get</command:verb>
+      <command:noun>StaleADComputer</command:noun>
+      <maml:description>
+        <maml:para>This tool will query AD for enabled computer objects that have not authenticated with the Domain Controller within the specified timeframe of either months or years.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>A simple tool that queries Active Directory for active computer objects that have not authenticated with the Domain Controller within a specified time period. This module must be either run locally on Domain Controller or on endpoint with the ActiveDirectory module installed to run the query.</maml:para>
+      <maml:para>The tool uses LastLogonDate property of the computer object to determine the results returned based on input.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Get-StaleADComputer</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>LastLoginYears</maml:name>
+          <maml:description>
+            <maml:para>Enter number of years in past time as threshold. Will return any object with a login time stamp older than this.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>1 Year</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>Get-StaleADComputer</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>LastLoginMonths</maml:name>
+          <maml:description>
+            <maml:para>Enter number of months (1-11) in past time as threshold. Will return any object with a login time stamp older than this.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>3 Months</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>LastLoginYears</maml:name>
+        <maml:description>
+          <maml:para>Enter number of years in past time as threshold. Will return any object with a login time stamp older than this.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>1 Year</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>LastLoginMonths</maml:name>
+        <maml:description>
+          <maml:para>Enter number of months (1-11) in past time as threshold. Will return any object with a login time stamp older than this.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>3 Months</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None. You cannot pipe objects to this module.</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>PSObject</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- EXAMPLE 1 --------------------------</maml:title>
+        <dev:code>This will return computer objects that have not authenticated in over 6 months, will sort objects by LastLogon timestamp with oldest at the top, and export the results to a CSV file:</dev:code>
+        <dev:remarks>
+          <maml:para>Get-StaleADComputer -LastLoginMonths 6 | Sort-Object LastLogon | Export-CSV C:\temp\staleADComputers.csv</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- EXAMPLE 2 --------------------------</maml:title>
+        <dev:code>This will return all computer objects that have not authenticated in over 1 year (default value) and display results in table in the console:</dev:code>
+        <dev:remarks>
+          <maml:para>Get-StaleADComputer -LastLoginYears</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- EXAMPLE 3 --------------------------</maml:title>
+        <dev:code>Will return all computer objects that have not authenticated in over 2 months (positional parameter in default parameter set) and will display results in table in the console with oldest at the top:</dev:code>
+        <dev:remarks>
+          <maml:para>Get-StaleADComputer 2 | Sort-Object LastLogon</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Get-StaleADUser</maml:linkText>
+        <maml:uri></maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>Active Directory Module</maml:linkText>
+        <maml:uri>https://learn.microsoft.com/en-us/powershell/module/activedirectory/?view=windowsserver2022-ps</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Get-StaleADUser</command:name>
+      <command:verb>Get</command:verb>
+      <command:noun>StaleADUser</command:noun>
+      <maml:description>
+        <maml:para>This tool will query AD for enabled user objects that have not authenticated with the Domain Controller within the specified timeframe of either months or years.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>A simple tool that queries Active Directory for active user objects that have not authenticated with the Domain Controller within a specified time period. This module must be either run locally on Domain Controller or on endpoint with the ActiveDirectory module installed to run the query.</maml:para>
+      <maml:para>The tool uses LastLogonDate property of the user object to determine the results returned based on input.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Get-StaleADUser</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>LastLoginYears</maml:name>
+          <maml:description>
+            <maml:para>Enter number of years in past time as threshold. Will return any object with a login time stamp older than this.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>1 Year</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>Get-StaleADUser</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>LastLoginMonths</maml:name>
+          <maml:description>
+            <maml:para>Enter number of months (1-11) in past time as threshold. Will return any object with a login time stamp older than this.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>3 Months</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>LastLoginYears</maml:name>
+        <maml:description>
+          <maml:para>Enter number of years in past time as threshold. Will return any object with a login time stamp older than this.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>1 Year</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>LastLoginMonths</maml:name>
+        <maml:description>
+          <maml:para>Enter number of months (1-11) in past time as threshold. Will return any object with a login time stamp older than this.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>3 Months</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None. You cannot pipe objects to this module.</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>PSObject</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- EXAMPLE 1 --------------------------</maml:title>
+        <dev:code>6 months, will sort objects by LastLogon timestamp with oldest at the top, and export the results to a CSV file:</dev:code>
+        <dev:remarks>
+          <maml:para>Get-StaleADuser -LastLoginMonths 6 | Sort-Object LastLogon | Export-CSV C:\temp\staleADusers.csv</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- EXAMPLE 2 --------------------------</maml:title>
+        <dev:code>1 year (default value) and display results in table in the console:</dev:code>
+        <dev:remarks>
+          <maml:para>Get-StaleADuser -LastLoginYears</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- EXAMPLE 3 --------------------------</maml:title>
+        <dev:code>2 months (positional parameter in default parameter set) and will display results in table in the console with oldest at the top:</dev:code>
+        <dev:remarks>
+          <maml:para>Get-StaleADuser 2 | Sort-Object LastLogon</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Get-StaleADComputer</maml:linkText>
+        <maml:uri></maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>Active Directory Module</maml:linkText>
+        <maml:uri>https://learn.microsoft.com/en-us/powershell/module/activedirectory/?view=windowsserver2022-ps</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+</helpItems>
